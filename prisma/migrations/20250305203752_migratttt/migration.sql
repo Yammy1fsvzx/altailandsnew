@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "LandPlot" ALTER COLUMN "features" DROP DEFAULT,
+ALTER COLUMN "utilities" DROP DEFAULT;

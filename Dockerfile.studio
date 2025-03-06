@@ -1,0 +1,21 @@
+# Используем Node.js как базовый образ
+FROM node:20-alpine
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем только необходимые файлы
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Устанавливаем зависимости
+RUN npm install
+
+# Генерируем Prisma Client
+RUN npx prisma generate
+
+# Открываем порт 5555
+EXPOSE 5555
+
+# Запускаем Prisma Studio
+CMD npx prisma studio --port 5555 --hostname 0.0.0.0 

@@ -1,0 +1,575 @@
+@import "tailwindcss";
+
+/* Основные цвета */
+:root {
+  --primary: #16a34a;
+  --primary-light: #3B9E64;
+  --primary-dark: #15803d;
+  --primary-contrast: #FFFFFF;
+  
+  --secondary: #1A4D45;
+  --secondary-light: #266B61;
+  --secondary-dark: #0E2F2A;
+  
+  --accent: #F3B95F;
+  --accent-light: #F7CA87;
+  --accent-dark: #D99B3C;
+  
+  --success: #4CAF50;
+  --warning: #FFC107;
+  --error: #DC3545;
+  
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+  --font-plus-jakarta: var(--font-plus-jakarta);
+  --font-inter: var(--font-inter);
+  --swiper-navigation-size: 0;
+  --swiper-theme-color: transparent;
+  --color-primary: #2B7A4B;
+  --color-primary-light: #2a7c4c;
+  --color-primary-dark: #1C5132;
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+/* Базовые стили */
+body {
+  font-family: var(--font-inter);
+  color: var(--gray-900);
+  background-color: var(--gray-50);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-plus-jakarta);
+}
+
+/* Компоненты */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+  background-color: var(--primary);
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-700);
+  background-color: white;
+  border: 1px solid var(--gray-300);
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--gray-50);
+}
+
+/* Формы */
+.form-group {
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Стили для поля ввода с иконкой */
+.form-input-with-icon {
+  padding-left: 2.5rem !important;
+  padding-right: 0.75rem !important;
+}
+
+.form-input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(43, 122, 75, 0.2);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+/* Статусы */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+.status-available {
+  background-color: rgba(43, 122, 75, 0.2);
+  color: var(--primary);
+}
+
+.status-reserved {
+  background-color: rgba(243, 185, 95, 0.2);
+  color: var(--accent-dark);
+}
+
+.status-sold {
+  background-color: rgba(26, 77, 69, 0.2);
+  color: var(--secondary);
+}
+
+/* Карточки */
+.feature-card {
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(43, 122, 75, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-color: rgba(43, 122, 75, 0.1);
+}
+
+/* Навигация */
+.nav-link {
+  position: relative;
+  color: var(--gray-600);
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--gray-900);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--primary), var(--primary-light));
+  transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Анимации */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Медиа запросы */
+@media (max-width: 768px) {
+  .btn-primary,
+  .btn-secondary {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .feature-card {
+    padding: 1rem;
+  }
+}
+
+/* Градиентный фон для hero-секции */
+.hero-background {
+  background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: relative;
+}
+
+.hero-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.1;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Анимации для элементов при скролле */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Стилизация скроллбара */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, var(--primary-light), var(--primary));
+}
+
+/* Анимация для изображений */
+.image-zoom {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.image-zoom img {
+  transition: transform 700ms ease-in-out;
+}
+
+.image-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* Стили для модальных окон */
+.modal-content {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+/* Временное решение для отсутствующего hero-изображения */
+.hero-fallback {
+  background-size: cover;
+}
+
+/* Стили для Swiper */
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  width: 44px !important;
+  height: 44px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 50% !important;
+  z-index: 10 !important;
+  transition: background 0.3s ease;
+  pointer-events: auto !important;
+}
+
+/* Стили для стрелок */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 20px !important;
+  color: var(--primary) !important;
+  font-weight: bold !important;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background: white !important;
+}
+
+/* Позиционирование стрелок */
+.swiper-button-prev {
+  left: 16px !important;
+}
+
+.swiper-button-next {
+  right: 16px !important;
+}
+
+/* Стили для пагинации */
+.swiper-pagination {
+  position: absolute !important;
+  bottom: 1rem !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  color: white;
+  z-index: 10 !important;
+}
+
+/* Убираем боковую полоску */
+.swiper-scrollbar {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none !important;
+  }
+}
+
+/* Анимации */
+@keyframes loading {
+  0% {
+    width: 0;
+    transform: translateX(0);
+  }
+  50% {
+    width: 100%;
+    transform: translateX(0);
+  }
+  100% {
+    width: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Если нужно убрать отступ на каких-то конкретных страницах */
+.no-header-padding {
+  padding-top: 0;
+}
+
+/* Стили для sticky-элементов с учетом высоты шапки */
+.sticky {
+  top: calc(5rem + 1rem) !important; /* 5rem (высота шапки) + отступ 1rem */
+}
+
+/* Или более специфичный стиль для фильтров */
+.filters-sticky {
+  position: sticky;
+  top: calc(5rem + 1rem);
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 640px) {
+  .hero-background {
+    min-height: 80vh;
+  }
+  
+  .btn-primary, .btn-secondary {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .form-input {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.text-primary {
+  color: #16a34a;
+}
+
+@media (max-width: 1024px) {
+  .mobile-menu-open {
+    overflow: hidden;
+  }
+  
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: white;
+    transform: translateX(100%);
+    transition: transform 300ms ease-in-out;
+  }
+  
+  .mobile-menu.open {
+    transform: translateX(0);
+  }
+  
+  .mobile-menu.closed {
+    transform: translateX(100%);
+  }
+}
+
+.font-play {
+  font-family: 'Play', system-ui, sans-serif !important;
+  font-weight: 400 !important;
+}
+
+/* 3D и перспектива */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Дополнительные стили анимаций при скролле */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@layer components {
+  /* Кастомные стили для селектов */
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--gray-900);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 38px;
+  }
+
+  .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+  }
+
+  .form-select:hover {
+    border-color: var(--gray-400);
+  }
+
+  .form-select option {
+    padding: 0.5rem 0.75rem;
+    background-color: white;
+    color: var(--gray-900);
+    cursor: pointer;
+  }
+
+  .form-select option:hover {
+    background-color: rgba(22, 163, 74, 0.1);
+  }
+
+  /* Варианты селектов */
+  .form-select-white {
+    background-color: white;
+    border: 1px solid var(--gray-300);
+  }
+
+  .form-select-gray {
+    background-color: var(--gray-100);
+    border: 1px solid transparent;
+  }
+
+  .form-select-gray:hover {
+    background-color: var(--gray-200);
+  }
+
+  /* Стили для disabled состояния */
+  .form-select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--gray-100);
+  }
+
+  /* Стили для группы опций */
+  .form-select optgroup {
+    font-weight: 600;
+    color: var(--gray-700);
+  }
+
+  /* Кастомная стрелка при фокусе */
+  .form-select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2316a34a' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}

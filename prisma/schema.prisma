@@ -1,0 +1,154 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  phone     String
+  email     String?
+  address   String?
+  whatsapp  Json?    // Будет хранить объект {enabled: boolean, username: string}
+  telegram  Json?    // Будет хранить объект {enabled: boolean, username: string}
+  vk        Json?    // Будет хранить объект {enabled: boolean, username: string}
+  work_hours Json?    // Будет хранить объект {monday_friday: string, saturday_sunday: string}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Request {
+  id          Int      @id @default(autoincrement())
+  name        String
+  phone       String
+  email       String
+  message     String
+  type        String   @default("contact_form")
+  status      String   @default("new")  // new, processing, completed, rejected
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model LandPlot {
+  id                String        @id @default(uuid())
+  title             String
+  description       String        @db.Text
+  cadastralNumbers  String[]     // Массив кадастровых номеров
+  area             Float         // Площадь в кв.м.
+  region           String        // Регион
+  location         String        // Населенный пункт
+  landCategory     String        // Категория земель
+  permittedUse     String[]     // Виды разрешенного использования (ВРИ)
+  price            Float         // Общая цена
+  pricePerMeter    Float         // Цена за кв.м.
+  isVisible        Boolean       @default(true)  // Видимость для пользователя
+  status           LandStatus    @default(AVAILABLE)  // Статус земли
+  
+  // Новые поля
+  features        String[]      // Особенности участка
+  utilities       Json          // Коммуникации в виде объекта
+  
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  images           Image[]       // Связь с изображениями
+  attachments      Attachment[]  // Связь с прикрепленными файлами
+  inquiries        Inquiry[]     // Связь с заявками по участкам
+}
+
+model Image {
+  id              String    @id @default(uuid())
+  url             String    // URL изображения
+  path            String    // Путь к изображению
+  order           Int       // Порядок отображения
+  isMain          Boolean   @default(false)  // Является ли главным изображением
+  landPlotId      String    // ID участка
+  landPlot        LandPlot  @relation(fields: [landPlotId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([landPlotId, order])  // Уникальный порядок для каждого участка
+}
+
+model Attachment {
+  id              String    @id @default(uuid())
+  name            String    // Название файла
+  path            String    // Путь к файлу
+  type            String    // Тип файла
+  size            Int      // Размер файла в байтах
+  landPlotId      String    // ID участка
+  landPlot        LandPlot  @relation(fields: [landPlotId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+enum LandStatus {
+  AVAILABLE       // Доступно
+  RESERVED        // Забронировано
+  SOLD           // Продано
+}
+
+// Модель для заявок с формы на странице участка
+model Inquiry {
+  id            String      @id @default(uuid())
+  name          String
+  phone         String
+  message       String?     @db.Text
+  source        String      // Источник заявки (страница участка, контактная форма и т.д.)
+  status        String      @default("new") // new, processing, completed, rejected
+  plotId        String?     // ID участка, если заявка связана с участком
+  landPlot      LandPlot?   @relation(fields: [plotId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+// Модель для вопросов квиза
+model QuizQuestion {
+  id              Int             @id @default(autoincrement())
+  question        String          // Текст вопроса
+  options         String[]        // Варианты ответов
+  order           Int             // Порядок вопроса в квизе
+  isActive        Boolean         @default(true) // Активен ли вопрос
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  responses       QuizResponse[]  // Связь с ответами пользователей
+
+  @@unique([order]) // Уникальный порядок вопросов
+}
+
+// Модель для ответов пользователей на квиз
+model QuizResponse {
+  id              String         @id @default(uuid())
+  name            String         // Имя пользователя
+  phone           String         // Телефон
+  email           String?        // Email (опционально)
+  answers         Json           // Ответы в формате JSON {questionId: answer}
+  completed       Boolean        @default(false) // Завершил ли пользователь квиз
+  status          String         @default("new") // Статус обработки (new, processing, completed)
+  questionId      Int?           // ID вопроса, на котором остановился пользователь (если не завершил)
+  question        QuizQuestion?  @relation(fields: [questionId], references: [id])
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  promoCode       PromoCode?     // Связь с промокодом
+
+  @@index([phone]) // Индекс для ускорения поиска по телефону
+  @@index([email]) // Индекс для ускорения поиска по email
+}
+
+// Модель для промокодов
+model PromoCode {
+  id              String         @id @default(uuid())
+  code            String         @unique // Уникальный код промокода
+  discountPercent Int            @default(5) // Процент скидки (по умолчанию 5%)
+  isActive        Boolean        @default(true) // Активен ли промокод
+  expiresAt       DateTime?      // Дата истечения срока действия (опционально)
+  usageCount      Int            @default(0) // Количество использований
+  maxUsages       Int?           // Максимальное количество использований (null - без ограничений)
+  quizResponseId  String         @unique // ID ответа на квиз
+  quizResponse    QuizResponse   @relation(fields: [quizResponseId], references: [id], onDelete: Cascade)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+} 
