@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/altai-lands
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/altai-lands?schema=public
       - REDIS_URL=redis://redis:6379
       - NEXTAUTH_SECRET=your-secret-key
       - NEXTAUTH_URL=http://localhost:3000
@@ -28,7 +28,7 @@ services:
     ports:
       - "5555:5555"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/altai-lands
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/altai-lands?schema=public
     depends_on:
       postgres:
         condition: service_healthy
@@ -67,6 +67,20 @@ services:
       retries: 5
     restart: unless-stopped
 
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - uploads:/var/www/uploads
+    depends_on:
+      - app
+
 volumes:
   postgres_data:
-  redis_data: 
+  redis_data:
+  uploads: 
